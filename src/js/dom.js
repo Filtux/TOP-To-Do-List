@@ -1,4 +1,4 @@
-import { addProject, getProjectByName, projects } from './index';
+import { addProject, getProjectByName, projects, removeProject, selectProject } from './index';
 import { saveProjectsToLocalStorage } from './storage';
 import Todo from './todo';
 
@@ -46,12 +46,26 @@ const renderTodos = (project) => {
 const createProjectElement = (project) => {
   const projectElement = document.createElement('div');
   projectElement.classList.add('project');
-  projectElement.textContent = project.name;
-  projectElement.addEventListener('click', () => {
+
+  const projectNameElement = document.createElement('span');
+  projectNameElement.textContent = project.name;
+  projectNameElement.addEventListener('click', () => {
     renderTodos(project);
     document.querySelectorAll('.project').forEach(proj => proj.classList.remove('selected'));
     projectElement.classList.add('selected');
   });
+  projectElement.appendChild(projectNameElement);
+
+  const removeButton = document.createElement('button');
+  removeButton.classList.add('remove-project');
+  removeButton.textContent = 'Remove';
+  removeButton.addEventListener('click', () => {
+    removeProject(project.name);
+    renderProjects();
+    saveProjectsToLocalStorage(projects);
+  });
+  projectElement.appendChild(removeButton);
+
   return projectElement;
 };
 
@@ -71,8 +85,8 @@ const setupEventListeners = () => {
     const priority = document.querySelector('.todo-priority').value;
 
     const newTodo = Todo(title, description, dueDate, priority);
-    const currentProject = document.querySelector('.project.selected');
-    const projectName = currentProject ? currentProject.textContent : 'Default';
+    const currentProjectElement = document.querySelector('.project.selected');
+    const projectName = currentProjectElement ? currentProjectElement.querySelector('span').textContent : 'Default';
     const project = getProjectByName(projectName);
     project.addTodo(newTodo);
 
@@ -85,6 +99,7 @@ const setupEventListeners = () => {
     if (projectName && !getProjectByName(projectName)) {
       addProject(projectName);
       renderProjects();
+      selectProject(projectName);
       saveProjectsToLocalStorage(projects);
     }
   });
