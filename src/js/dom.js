@@ -37,10 +37,21 @@ const createTodoElement = (todo, project) => {
 
 const renderTodos = (project) => {
   const todoContainer = document.querySelector('.todo-container');
-  todoContainer.innerHTML = '<h2 class="todo-header">Todos</h2>';
+  todoContainer.innerHTML = `
+    <h2 class="to-do-header">To-Do</h2>
+    <div class="new-todo-container">
+      <input type="text" class="todo-title" placeholder="Title">
+      <input type="text" class="todo-description" placeholder="Description">
+      <input type="date" class="todo-dueDate">
+      <input type="text" class="todo-priority" placeholder="Priority">
+      <button class="add-todo-btn">Add To-Do</button>
+    </div>
+  `;
   project.getTodos().forEach(todo => {
     todoContainer.appendChild(createTodoElement(todo, project));
   });
+
+  setupAddTodoListener();
 };
 
 const createProjectElement = (project) => {
@@ -77,32 +88,40 @@ const renderProjects = () => {
   });
 };
 
-const setupEventListeners = () => {
-  document.querySelector('.add-todo-btn').addEventListener('click', () => {
-    const title = document.querySelector('.todo-title').value;
-    const description = document.querySelector('.todo-description').value;
-    const dueDate = document.querySelector('.todo-dueDate').value;
-    const priority = document.querySelector('.todo-priority').value;
+const setupAddTodoListener = () => {
+  const addTodoBtn = document.querySelector('.add-todo-btn');
+  if (addTodoBtn) {
+    addTodoBtn.addEventListener('click', () => {
+      const title = document.querySelector('.todo-title').value;
+      const description = document.querySelector('.todo-description').value;
+      const dueDate = document.querySelector('.todo-dueDate').value;
+      const priority = document.querySelector('.todo-priority').value;
 
-    const newTodo = Todo(title, description, dueDate, priority);
-    const currentProjectElement = document.querySelector('.project.selected');
-    const projectName = currentProjectElement ? currentProjectElement.querySelector('span').textContent : 'Default';
-    const project = getProjectByName(projectName);
-    project.addTodo(newTodo);
+      const newTodo = Todo(title, description, dueDate, priority);
+      const currentProjectElement = document.querySelector('.project.selected');
+      const projectName = currentProjectElement ? currentProjectElement.querySelector('span').textContent : 'Default';
+      const project = getProjectByName(projectName);
+      project.addTodo(newTodo);
 
-    renderTodos(project);
-    saveProjectsToLocalStorage(projects);
-  });
-
-  document.querySelector('.add-project-btn').addEventListener('click', () => {
-    const projectName = document.querySelector('.project-title').value;
-    if (projectName && !getProjectByName(projectName)) {
-      addProject(projectName);
-      renderProjects();
-      selectProject(projectName);
+      renderTodos(project);
       saveProjectsToLocalStorage(projects);
-    }
-  });
+    });
+  }
+};
+
+const setupEventListeners = () => {
+  const addProjectBtn = document.querySelector('.add-project-btn');
+  if (addProjectBtn) {
+    addProjectBtn.addEventListener('click', () => {
+      const projectName = document.querySelector('.project-title').value;
+      if (projectName && !getProjectByName(projectName)) {
+        addProject(projectName);
+        renderProjects();
+        selectProject(projectName);
+        saveProjectsToLocalStorage(projects);
+      }
+    });
+  }
 };
 
 export {

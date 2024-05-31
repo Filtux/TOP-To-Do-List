@@ -1,17 +1,97 @@
-body {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    width: 100%;
+    height: 100%;
     font-family: Arial, sans-serif;
   }
   
-  #app {
-    width: 60%;
-    margin: 0 auto;
+  .app {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    background-color: #2f4f4f;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .sidebar-title {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 2em;
     text-align: center;
   }
   
-  .todo {
-    border: 1px solid #ccc;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
+  .project-container {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-grow: 1;
+    overflow-y: auto;
   }
   
+  .project-header {
+    align-self: flex-end;
+  }
+  
+  .add-project-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .project-title {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .add-project-btn {
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .add-project-btn:hover {
+    background-color: #1c86ee;
+  }
+  
+  .todo-container {
+    background-color: #d0e7e7;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .todo-header {
+    margin-bottom: 10px;
+  }
+  
+  .new-todo-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .add-todo-btn {
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .add-todo-btn:hover {
+    background-color: #1c86ee;
+  }
